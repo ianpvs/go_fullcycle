@@ -6,7 +6,3 @@ services:
     container_name: docker_go
     ports:
       - 80:80
-    deploy:
-      resources:
-        limits:
-          memory: 6m

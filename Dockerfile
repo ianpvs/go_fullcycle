@@ -1,9 +1,14 @@
-FROM golang:1.22.0-alpine
+FROM golang:1.22.0 AS builder
 
-WORKDIR /
-COPY . .
+WORKDIR /app
+COPY . /app
 
-RUN go env -w GO111MODULE=auto
-RUN go build -o app .
+RUN CGO_ENABLED=0 GOOS=linux go build -o app app.go
 
-CMD ./app
+FROM scratch
+
+WORKDIR /app
+
+COPY --from=builder /app/app ./
+
+CMD [ "./app" ]
